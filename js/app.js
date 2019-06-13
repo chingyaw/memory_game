@@ -22,19 +22,17 @@
  * Create a list that holds all of your cards
  */
 var openedCardCount = 0; // track current run's open card (0 means no open card, max is 2). if it hits 2 but two cards are not matched, reset it to 0
+var playing = false;
 var openedCards = [];
 var matchedPairs = 0;
 var waiting = false;
 var flipCards = false;
+var startTime = 0;
+var endTime = 0;
+var openCount = 0;
 const iconList = ['fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-bolt', 'fa-paper-plane-o', 'fa-cube', 'fa-anchor',
     'fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-bolt', 'fa-paper-plane-o', 'fa-cube', 'fa-anchor'];
-var shfulledIcon = shuffle(iconList);
 let cards = {};//[]; // an array of objects, {id: int, position: int, matched: boolean, opened: boolean}
-for (i = 0; i < 16; i++) {
-    //cards.push({'id': 'card' + i.toString(), 'position': shfulledPosition[i], 'matched': false, 'opened': false});
-    const cardId = 'card' + i.toString();
-    cards[cardId] = {'icon': shfulledIcon[i], 'matched': false, 'opened': false};
-}
 
 /*
  * Display the cards on the page
@@ -70,13 +68,41 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 const pattern = /card\d+/;
+const restartElement = document.querySelector('.restart');
 const deckElement = document.querySelector('.deck');
+const childNodes = deckElement.querySelectorAll('.card');
+const moveCountElement = document.querySelector('.moves');
+const starElement = document.querySelector('.stars');
+const starNodes = starElement.querySelectorAll('li');
 function openCard(evt) {
     const target = evt.target;
     const selectedCardId = target.id;
     if (!waiting && pattern.test(selectedCardId)) {
         const selectedCard = cards[selectedCardId];
+
+        if(!playing) {
+            startTime = performance.now();
+            playing = true;
+        }
+
         if (!selectedCard['opened'] && openedCardCount < 2) {
+            openCount += 1;
+            moveCountElement.textContent = (openCount > 1)? openCount + ' moves': openCount + ' move';
+            if (openCount > 16 && openCount <= 32) {
+                // const elem2 = document.querySelector('#star2');
+                // if (elem2) {
+                //     starElement.removeChild(elem2);
+                // }
+                const star2 = document.querySelector('#star2');
+                star2.style.display = 'none';
+            } else if (openCount > 32) {
+                // const elem1 = document.querySelector('#star1');
+                // if (elem1) {
+                //     starElement.removeChild(elem1);
+                // }
+                const star1 = document.querySelector('#star1');
+                star1.style.display = 'none';
+            }
             // this card is not opened yet
 
             selectedCard['opened'] = true;
@@ -103,7 +129,10 @@ function openCard(evt) {
                     matchedPairs += 1;
 
                     if (matchedPairs === 8) {
+                        endTime = performance.now();
+                        console.log(endTime);
                         alert('done!');
+                        console.log('Playing time: ', endTime - startTime, ' Open count: ', openCount);
                     }
                 } else {
                     // reset opened cards' properties
@@ -138,13 +167,57 @@ function compareTwoCards(card1, card2) {
     return cards[card1]['icon'] === cards[card2]['icon'];
 }
 
-// Assign an id for each card
-const childNodes = deckElement.querySelectorAll('.card');
-for (let i = 0; i< 16; i++) {
-    childNodes[i].id = 'card' + i.toString();
+function resetGame() {
+
+    openedCardCount = 0;
+    openedCards = [];
+    matchedPairs = 0;
+    waiting = false;
+    flipCards = false;
+    startTime = 0;
+    endTime = 0;
+    openCount = 0;
+    playing = false;
+
+    // Assign an id for each card
+    for (let i = 0; i< 16; i++) {
+        childNodes[i].id = 'card' + i.toString();
+    }
+
+
+    for (let i = 0; i< 3; i++) {
+        starNodes[i].id = 'star' + i.toString();
+    }
+
+    // reset star rating
+    const star0 = document.querySelector('#star0');
+    star0.style.display = 'inline';
+
+    const star1 = document.querySelector('#star1');
+    star1.style.display = 'inline';
+
+    const star2 = document.querySelector('#star2');
+    star2.style.display = 'inline';
+
+    // reset moves
+    moveCountElement.textContent = 0;
+
+    // reset opened cards
+    var shfulledIcon = shuffle(iconList);
+
+    for (i = 0; i < 16; i++) {
+        //cards.push({'id': 'card' + i.toString(), 'position': shfulledPosition[i], 'matched': false, 'opened': false});
+        const cardId = 'card' + i.toString();
+        cards[cardId] = {'icon': shfulledIcon[i], 'matched': false, 'opened': false};
+        childNodes[i].className = 'card';
+    }
 }
 
 
-document.body.appendChild(deckElement);
-deckElement.addEventListener('click', openCard);
 
+
+resetGame();
+
+// document.body.appendChild(deckElement);
+deckElement.addEventListener('click', openCard);
+restartElement.addEventListener('click', resetGame);
