@@ -30,6 +30,13 @@ var flipCards = false;
 var startTime = 0;
 var endTime = 0;
 var openCount = 0;
+
+var playTimer;
+var totalTimeInSeconds = 0;
+var hour = '00';
+var minute = '00';
+var second = '00';
+
 const iconList = ['fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-bolt', 'fa-paper-plane-o', 'fa-cube', 'fa-anchor',
     'fa-leaf', 'fa-bicycle', 'fa-diamond', 'fa-bomb', 'fa-bolt', 'fa-paper-plane-o', 'fa-cube', 'fa-anchor'];
 let cards = {};//[]; // an array of objects, {id: int, position: int, matched: boolean, opened: boolean}
@@ -74,6 +81,18 @@ const childNodes = deckElement.querySelectorAll('.card');
 const moveCountElement = document.querySelector('.moves');
 const starElement = document.querySelector('.stars');
 const starNodes = starElement.querySelectorAll('li');
+
+const timerElement = document.querySelector('.timer');
+const resultModal = document.querySelector(".modal");
+const closeButton = document.querySelector(".close-button");
+const replayButton = document.querySelector(".replay");
+const cancelButton = document.querySelector(".cancel");
+
+// Reference: https://sabe.io/tutorials/how-to-create-modal-popup-box
+function toggleModal() {
+    resultModal.classList.toggle("show-modal");
+}
+
 function openCard(evt) {
     const target = evt.target;
     const selectedCardId = target.id;
@@ -83,19 +102,31 @@ function openCard(evt) {
         if(!playing) {
             startTime = performance.now();
             playing = true;
+            
+            playTimer = setInterval(function () {
+                totalTimeInSeconds += 1;
+
+                hour = parseInt(totalTimeInSeconds / 3600);
+                minute = parseInt((totalTimeInSeconds - hour*3600) / 60);
+                second = parseInt(totalTimeInSeconds - hour * 3600 - minute * 60)
+                timerElement.textContent = `${("0" + hour).slice(-2)}:${("0" + minute).slice(-2)}:${("0" + second).slice(-2)}`;
+            }, 1000);
+            
+            
         }
 
         if (!selectedCard['opened'] && openedCardCount < 2) {
             openCount += 1;
-            moveCountElement.textContent = (openCount > 1)? openCount + ' moves': openCount + ' move';
-            if (openCount > 16 && openCount <= 32) {
+            moveCount = parseInt(openCount / 2)
+            moveCountElement.textContent = (moveCount > 1)? moveCount + ' moves': moveCount + ' move';
+            if (moveCount > 8 && moveCount <= 16) {
                 // const elem2 = document.querySelector('#star2');
                 // if (elem2) {
                 //     starElement.removeChild(elem2);
                 // }
                 const star2 = document.querySelector('#star2');
                 star2.style.display = 'none';
-            } else if (openCount > 32) {
+            } else if (moveCount > 16) {
                 // const elem1 = document.querySelector('#star1');
                 // if (elem1) {
                 //     starElement.removeChild(elem1);
@@ -118,7 +149,6 @@ function openCard(evt) {
             if (openedCardCount === 2) {
                 // call match function
                 // if not matched, reset openedCardCount to 0 and flip both cards
-
                 if (compareTwoCards(openedCards[0].id, openedCards[1].id)) {
                     openedCards[0].className = 'card open match';
                     openedCards[1].className = 'card open match';
@@ -130,9 +160,9 @@ function openCard(evt) {
 
                     if (matchedPairs === 8) {
                         endTime = performance.now();
-                        console.log(endTime);
-                        alert('done!');
-                        console.log('Playing time: ', endTime - startTime, ' Open count: ', openCount);
+                        clearInterval(playTimer);
+                        toggleModal();
+                        // console.log('Playing time: ', endTime - startTime, ' Open count: ', openCount);
                     }
                 } else {
                     // reset opened cards' properties
@@ -179,6 +209,12 @@ function resetGame() {
     openCount = 0;
     playing = false;
 
+    totalTimeInSeconds = 0;
+    hour = 0;
+    minute = 0;
+    second = 0;
+    clearInterval(playTimer);
+    timerElement.textContent = `${("0" + hour).slice(-2)}:${("0" + minute).slice(-2)}:${("0" + second).slice(-2)}`;
     // Assign an id for each card
     for (let i = 0; i< 16; i++) {
         childNodes[i].id = 'card' + i.toString();
@@ -213,7 +249,10 @@ function resetGame() {
     }
 }
 
-
+function replay(){
+    toggleModal();
+    resetGame();
+}
 
 
 resetGame();
@@ -221,3 +260,6 @@ resetGame();
 // document.body.appendChild(deckElement);
 deckElement.addEventListener('click', openCard);
 restartElement.addEventListener('click', resetGame);
+// closeButton.addEventListener("click", toggleModal);
+replayButton.addEventListener('click', replay);
+cancelButton.addEventListener('click', toggleModal);
