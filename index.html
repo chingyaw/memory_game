@@ -18,9 +18,9 @@
 
     <section class="score-panel">
         <ul class="stars">
-            <li><i class="fa fa-star"></i></li>
-            <li><i class="fa fa-star"></i></li>
-            <li><i class="fa fa-star"></i></li>
+            <li><i id="star0" class="fa fa-star"></i></li>
+            <li><i id="star1" class="fa fa-star"></i></li>
+            <li><i id="star2" class="fa fa-star"></i></li>
         </ul>
 
         <span class="moves">0</span>
@@ -86,8 +86,12 @@
 
 <div class="modal">
     <div class="modal-content">
-<!--        <span class="close-button">&times;</span>-->
-        <h3>Congulations!</h3>
+        <h3>Congratulations!</h3>
+        <div class="score">
+            <div class="ranking-result"></div>
+            <div class="move-result"></div>
+            <div class="play-time-result"></div>
+        </div>
         <div>
             Do you want to replay?
             <button class="replay">Yes</button>
