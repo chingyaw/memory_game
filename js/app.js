@@ -21,7 +21,7 @@ let openedCards = []; // track current open cards. If it hits 2 but two cards ar
 let matchedPairs = 0; // max = 8, using this variable to determine if all the cards are matched
 let waiting = false; // user can't open new card while in waiting state (waiting = true when two cards are not matched and waiting for 'close' cards
 let openCount = 0; // total open count. it's used for determining player's performance (ranking)
-let moveCount = 0;
+let moveCount = 0; // moveCount = openCount / 2, counting by pairs
 
 // Timer
 let playTimer; // to display user's playing time
@@ -160,7 +160,7 @@ function openCard(evt) {
 
                     if (matchedPairs === 8) {
                         clearInterval(playTimer);
-                        toggleModal();
+                        generateResult();
                     }
                 } else {
                     // reset opened cards' properties
@@ -182,8 +182,7 @@ function openCard(evt) {
 }
 
 function startGame() {
-
-    // stop timer
+    // stop timer, if the timer has been triggered before
     if (playTimer) {
         clearInterval(playTimer);
     }
@@ -208,7 +207,15 @@ function startGame() {
 
 function generateResult() {
     const rankingResultElement = document.querySelector('.ranking-result');
-    rankingResultElement.textContent = (moveCount - 1) / ;
+    const moveResultElement = document.querySelector('.move-result');
+    const totalTimeResultElement = document.querySelector('.totaltime-result');
+
+    const ranking = 3.0 - parseInt((moveCount - 1) / 8) * 0.5;
+    rankingResultElement.textContent = `Your Score: ${ranking}`;
+
+    moveResultElement.textContent = `Total Moves: ${moveCount}`;
+    totalTimeResultElement.textContent = 'Total Playing Time: ' + convertSecondsToHHMMSS(totalTimeInSeconds);
+
     toggleModal();
 }
 

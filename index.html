@@ -11,97 +11,100 @@
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>Matching Game</h1>
-    </header>
+    <div class="container">
+        <header>
+            <h1>Matching Game</h1>
+        </header>
 
-    <section class="score-panel">
-        <ul class="stars">
-            <li><i id="star0" class="fa fa-star"></i></li>
-            <li><i id="star1" class="fa fa-star"></i></li>
-            <li><i id="star2" class="fa fa-star"></i></li>
+        <section class="score-panel">
+            <ul class="stars">
+                <li><i id="star0" class="fa fa-star"></i></li>
+                <li><i id="star1" class="fa fa-star"></i></li>
+                <li><i id="star2" class="fa fa-star"></i></li>
+            </ul>
+
+            <span class="moves">0</span>
+
+            <div class="timer">00:00:00</div>
+
+            <div class="restart">
+                <i class="fa fa-repeat"></i>
+            </div>
+        </section>
+
+        <ul class="deck">
+            <li class="card">
+                <i class="fa fa-diamond"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-paper-plane-o"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-anchor"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-bolt"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-cube"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-anchor"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-leaf"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-bicycle"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-diamond"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-bomb"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-leaf"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-bomb"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-bolt"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-bicycle"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-paper-plane-o"></i>
+            </li>
+            <li class="card">
+                <i class="fa fa-cube"></i>
+            </li>
         </ul>
-
-        <span class="moves">0</span>
-
-        <div class="timer">00:00:00</div>
-
-        <div class="restart">
-            <i class="fa fa-repeat"></i>
-        </div>
-    </section>
-
-    <ul class="deck">
-        <li class="card">
-            <i class="fa fa-diamond"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-paper-plane-o"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-anchor"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-bolt"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-cube"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-anchor"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-leaf"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-bicycle"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-diamond"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-bomb"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-leaf"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-bomb"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-bolt"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-bicycle"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-paper-plane-o"></i>
-        </li>
-        <li class="card">
-            <i class="fa fa-cube"></i>
-        </li>
-    </ul>
-</div>
-
-<div class="modal">
-    <div class="modal-content">
-        <h3>Congratulations!</h3>
-        <div class="score">
-            <div class="ranking-result"></div>
-            <div class="move-result"></div>
-            <div class="play-time-result"></div>
-        </div>
-        <div>
-            Do you want to replay?
-            <button class="replay">Yes</button>
-            <button class="cancel">No</button>
-        </div>
-
-
     </div>
-</div>
 
-<script src="js/app.js"></script>
+    <footer class="footer">Copyright © 2019 C.Y. Wang</footer>
+
+    <div class="modal">
+        <div class="modal-content">
+            <h3>Congratulations!</h3>
+            <div class="score">
+                <div class="ranking-result"></div>
+                <div class="move-result"></div>
+                <div class="totaltime-result"></div>
+            </div>
+            <hr>
+            <div class="replay-option">
+                Do you want to replay?
+                <button class="replay">Yes</button>
+                <button class="cancel">No</button>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
 </body>
 </html>
